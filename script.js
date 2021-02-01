@@ -8,42 +8,46 @@ const messageInput = document.getElementById('message-input');
 //On demande le nom à l'utilisateur avec un pop-up.
 const name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :')
 
+const colors = ['red', 'blue', 'green', 'gold'];
+const color = colors[Math.floor(Math.random() * 5)];
+
 //On insére le message de bienvenue dans la liste du chat.
 appendMessage('Vous avez rejoint la salle de chat. Dites bonjour !');
 
 //Une fois le nom entré par le prompt, on envoie une émission de connexion au serveur avec le nom.
-socket.emit('new-user', name);
+socket.emit('new-user', { name: name, color: color });
 
 //Selon les émissions qu'on reçoit depuis le serveur
 //Si on reçoit une émission de message
 socket.on('chat-message', data => {
   //Écrire le message dans la liste.
-  appendMessage(`${data.name}: ${data.message}`)
+  appendMessage(`${data.name}: ${data.message}`, data.color)
 });
 
 //Si on reçoit une émission de connexion d'utilisateur
-socket.on('user-connected', name => {
+socket.on('user-connected', data => {
   //On l'écrit.
-  appendMessage(`${name} s'est connecté à la salle de chat !`);
+  appendMessage(`${data.name} s'est connecté à la salle de chat !`, data.color);
 });
 
 //Si on reçoit une émission de déconnexion d'utilisateur.
-socket.on('user-disconnected', name => {
-  appendMessage(`${name} s'est déconnecté. À bientôt !`);
+socket.on('user-disconnected', data => {
+  appendMessage(`${name} s'est déconnecté. À bientôt !`, data.color);
 });
 
 //On ajoute un EventListenter sur le bouton "SEND".
 messageForm.addEventListener('submit', e => {
   e.preventDefault(); //On empêche la page de se recharger quand on clique sur le bouton.
   const message = messageInput.value; // On enregistre le message dans une variable.
-  appendMessage(`${name}: ${message}`); // On écrit notre propre message.
-  socket.emit('send-chat-message', message); // On envoie une émission contenant notre message au serveur.
+  appendMessage(`${name}: ${message}`, color); // On écrit notre propre message.
+  socket.emit('send-chat-message', {message: message, color: color}); // On envoie une émission contenant notre message au serveur.
   messageInput.value = ''; // On vide l'input.
 });
 
 //Fonction permettant d'insérér un message dans la liste.
-function appendMessage(message) {
+function appendMessage(message, color) {
   const messageElement = document.createElement('div'); // On crée une div.
   messageElement.innerText = message; // On y ajoute le texte passé en argument.
+  messageElement.style.color = color;
   messageContainer.append(messageElement); //On insére l'élément dans le HTML.
 }
