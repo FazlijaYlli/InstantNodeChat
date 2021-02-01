@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000') //On utilise la fonction IO pour régler notre socket sur le serveur.
+const socket = io('http://localhost:3000'); //On utilise la fonction IO pour régler notre socket sur le serveur.
 
 //On insére tous les éléments HTML avec lesquels nous interagissons dans des constantes.
 const messageContainer = document.getElementById('message-container');
@@ -6,10 +6,10 @@ const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
 
 //On demande le nom à l'utilisateur avec un pop-up.
-const name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :')
+const name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :');
 
 const colors = ['red', 'blue', 'green', 'gold'];
-const color = colors[Math.floor(Math.random() * 5)];
+const color = colors[Math.floor(Math.random() * (colors.length))];
 
 //On insére le message de bienvenue dans la liste du chat.
 appendMessage('Vous avez rejoint la salle de chat. Dites bonjour !');
@@ -21,7 +21,7 @@ socket.emit('new-user', { name: name, color: color });
 //Si on reçoit une émission de message
 socket.on('chat-message', data => {
   //Écrire le message dans la liste.
-  appendMessage(`${data.name}: ${data.message}`, data.color)
+  appendMessage(`${data.name}: ${data.message}`, data.color);
 });
 
 //Si on reçoit une émission de connexion d'utilisateur
@@ -32,7 +32,7 @@ socket.on('user-connected', data => {
 
 //Si on reçoit une émission de déconnexion d'utilisateur.
 socket.on('user-disconnected', data => {
-  appendMessage(`${name} s'est déconnecté. À bientôt !`, data.color);
+  appendMessage(`${data.name} s'est déconnecté. À bientôt !`, data.color);
 });
 
 //On ajoute un EventListenter sur le bouton "SEND".
