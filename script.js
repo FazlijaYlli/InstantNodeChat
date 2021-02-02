@@ -1,4 +1,11 @@
-const socket = io('http://localhost:3000'); //On utilise la fonction IO pour régler notre socket sur le serveur.
+/*
+ *  ETML
+ *  NOM : FAZLIJA YLLI
+ *  DATE : 25.01.2021
+ *  DESCRIPTION : Javascript côté client, reçevant les émissions du serveur et émettant ses propres messages.
+*/
+//On utilise la fonction IO pour régler notre socket sur le serveur.
+const socket = io('http://localhost:3000');
 
 //On insére tous les éléments HTML avec lesquels nous interagissons dans des constantes.
 const messageContainer = document.getElementById('message-container');
@@ -6,8 +13,13 @@ const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
 
 //On demande le nom à l'utilisateur avec un pop-up.
-const name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :');
+let name = "";
+while(name === "")
+{
+  name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :');
+}
 
+//Création du tableau des couleurs disponibles, et séléction d'une couleur au hasard.
 const colors = ['red', 'blue', 'green', 'gold', 'cyan', 'magenta', 'lime', 'brown', 'pink', 'purple'];
 const color = colors[Math.floor(Math.random() * (colors.length))];
 
@@ -42,7 +54,11 @@ messageForm.addEventListener('submit', e => {
   messageInput.value = ''; // On vide l'input.
 });
 
-//Fonction permettant d'insérér un message dans la liste.
+/**
+ * Permets d'insérér un élément HTML contenant le message dans l'élément messageContainer
+ * @param message Message à afficher dans la div.
+ * @param color Couleur CSS à appliquer à la div.
+ */
 function appendMessage(message, color) {
   const messageElement = document.createElement('div'); // On crée une div.
   messageElement.innerText = message; // On y ajoute le texte passé en argument.
