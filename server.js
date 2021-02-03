@@ -37,6 +37,8 @@ io.on('connection', socket => {
   socket.on('new-user', data => {
     //On stocke le nom dans la case de l'id du socket dans le tableau 'users'.
     users[socket.id] = new User(data.name, data.color);
+    //Émission de la liste des utilisateurs mise à jour
+    socket.emit('update-list', {users: users});
     //Émission du message broadcast
     socket.broadcast.emit('user-connected', {name: users[socket.id].name, color: users[socket.id].color});
   });

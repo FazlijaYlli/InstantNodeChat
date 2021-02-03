@@ -11,10 +11,15 @@ const socket = io('http://localhost:3000');
 const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
+const userTable = document.getElementById('user-table');
 
 //On demande le nom à l'utilisateur avec un pop-up.
 const name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :');
 const reg = name.match(/^$|^\s$/g);
+
+//Création du tableau des couleurs disponibles, et séléction d'une couleur au hasard.
+const colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'lime', 'brown', 'pink', 'purple'];
+const color = colors[Math.floor(Math.random() * (colors.length))];
 
 if(reg !== null)
 {
@@ -27,12 +32,13 @@ else
   appendMessage('You joined the chatroom.', 'gold');
 }
 
-//Création du tableau des couleurs disponibles, et séléction d'une couleur au hasard.
-const colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'lime', 'brown', 'pink', 'purple'];
-const color = colors[Math.floor(Math.random() * (colors.length))];
-
 //Une fois le nom entré par le prompt, on envoie une émission de connexion au serveur avec le nom.
 socket.emit('new-user', { name: name, color: color });
+
+socket.on('update-list', data=>{
+  console.log('appending users...');
+  //TODO : Foreach sur la liste d'utilisateur data avec la méthode "AppendUser" pour les ajouter sur la liste.
+});
 
 //Selon les émissions qu'on reçoit depuis le serveur
 //Si on reçoit une émission de message
@@ -69,4 +75,16 @@ function appendMessage(message, color) {
   messageElement.innerText = message; // On y ajoute le texte passé en argument.
   messageElement.style.color = color; // On colore le texte de la couleur de l'utilisateur.
   messageContainer.append(messageElement); //On insére l'élément dans le HTML.
+}
+
+/**
+ * Permets d'insérer un utilisateur dans le tableau des utilisateurs.
+ * @param user Utilisateur à ajouter.
+ * @param color Couleur de l'utilisateur.
+ */
+function appendUser(user, color) {
+  const row = userTable.insertRow(1)
+  const cell = row.insertCell(0);
+  cell.innerText = user;
+  cell.style.color = color;
 }
