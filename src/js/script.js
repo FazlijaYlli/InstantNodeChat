@@ -20,7 +20,7 @@ while(name === "")
 }
 
 //Création du tableau des couleurs disponibles, et séléction d'une couleur au hasard.
-const colors = ['red', 'blue', 'green', 'gold', 'cyan', 'magenta', 'lime', 'brown', 'pink', 'purple'];
+const colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'lime', 'brown', 'pink', 'purple'];
 const color = colors[Math.floor(Math.random() * (colors.length))];
 
 //On insére le message de bienvenue dans la liste du chat.
@@ -37,12 +37,12 @@ socket.on('chat-message', data => {
 
 //Si on reçoit une émission de connexion d'utilisateur
 socket.on('user-connected', data => {
-  appendMessage(`${data.name} s'est connecté à la salle de chat !`); //On l'écrit.
+  appendMessage(`${data.name} s'est connecté à la salle de chat !`,'gold'); //On l'écrit.
 });
 
 //Si on reçoit une émission de déconnexion d'utilisateur.
 socket.on('user-disconnected', data => {
-  appendMessage(`${data.name} s'est déconnecté. À bientôt !`);
+  appendMessage(`${data.name} s'est déconnecté. À bientôt !`,'gold');
 });
 
 //On ajoute un EventListenter sur le bouton "SEND".

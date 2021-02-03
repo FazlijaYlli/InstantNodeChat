@@ -5,13 +5,30 @@
  *  DESCRIPTION : Javascript côté serveur, envoyant les émissions, attribuant un socket à chaque utilisateur et faisant la liaison entre chacun.
 */
 
-//Démarrage du serveur socket.io sur le port 3000
-const User = require("./User");
-const io = require('socket.io')(3000);
+const User = require("./src/js/User"); //Requiering my User class
+
+const express = require('express'); //Requiering Express
+const app = express(); //Creating an express app
+const server = require('http').Server(app) //Setting up an http server with express
+const io = require('socket.io')(server); //Using socket.io on this server.
+const port = 3000;
+
+//Creating a listener for the server.
+server.listen(port, ()=>{
+  console.log(`Server is now listening on port ${port}`);
+});
+
+//Setting up which folder can express use ; in this case, the entire project.
+app.use(express.static(__dirname));
+
+//ROUTING
+//Default Route
+app.get('/',(req,res)=>{
+  res.sendFile(__dirname + '/index.html');
+});
 
 //Tableau des utilisateurs
 const users = {};
-//const userColors = {};
 
 //Si un utilisateur se connecte au serveur, on lui attribue un socket et démarre un callback
 io.on('connection', socket => {
@@ -30,7 +47,10 @@ io.on('connection', socket => {
   });
   //S'il se déconnecte, on envoie un message en broadcast de déconnexion, et on supprime l'entrée dans le tableau.
   socket.on('disconnect', () => {
-    socket.broadcast.emit('user-disconnected', {name: users[socket.id].name, color: users[socket.id].color});
-    delete users[socket.id];
+    if(users[socket.id] != null)
+    {
+      socket.broadcast.emit('user-disconnected', {name: users[socket.id].name, color: users[socket.id].color});
+      delete users[socket.id];
+    }
   });
 });
