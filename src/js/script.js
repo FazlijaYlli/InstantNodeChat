@@ -13,18 +13,23 @@ const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
 
 //On demande le nom à l'utilisateur avec un pop-up.
-let name = "";
-while(name === "")
+const name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :');
+const reg = name.match(/^$|^\s$/g);
+
+if(reg !== null)
 {
-  name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :');
+  appendMessage('Erreur : Le nom fourni n\'est pas valide. Veuillez recharger la page.','red');
+  throw new Error('Erreur : Le nom fourni n\'est pas valide. Veuillez recharger la page.');
+}
+else
+{
+  //On insére le message de bienvenue dans la liste du chat.
+  appendMessage('You joined the chatroom.', 'gold');
 }
 
 //Création du tableau des couleurs disponibles, et séléction d'une couleur au hasard.
 const colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'lime', 'brown', 'pink', 'purple'];
 const color = colors[Math.floor(Math.random() * (colors.length))];
-
-//On insére le message de bienvenue dans la liste du chat.
-appendMessage('Vous avez rejoint la salle de chat. Dites bonjour !');
 
 //Une fois le nom entré par le prompt, on envoie une émission de connexion au serveur avec le nom.
 socket.emit('new-user', { name: name, color: color });
@@ -37,12 +42,12 @@ socket.on('chat-message', data => {
 
 //Si on reçoit une émission de connexion d'utilisateur
 socket.on('user-connected', data => {
-  appendMessage(`${data.name} s'est connecté à la salle de chat !`,'gold'); //On l'écrit.
+  appendMessage(`${data.name} joined the chatroom.`,'gold'); //On l'écrit.
 });
 
 //Si on reçoit une émission de déconnexion d'utilisateur.
 socket.on('user-disconnected', data => {
-  appendMessage(`${data.name} s'est déconnecté. À bientôt !`,'gold');
+  appendMessage(`${data.name} left the chatroom.`,'gold');
 });
 
 //On ajoute un EventListenter sur le bouton "SEND".
