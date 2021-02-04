@@ -12,6 +12,7 @@ const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
 const userTable = document.getElementById('user-table');
+const oldHTML = userTable.innerHTML;
 
 //On demande le nom à l'utilisateur avec un pop-up.
 const name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :');
@@ -35,9 +36,14 @@ else
 //Une fois le nom entré par le prompt, on envoie une émission de connexion au serveur avec le nom.
 socket.emit('new-user', { name: name, color: color });
 
-socket.on('update-list', data=>{
+//Si on reçoit une émission de mise à jour de la liste des utilisateurs.
+socket.on('update-list', users =>{
   console.log('appending users...');
-  //TODO : Foreach sur la liste d'utilisateur data avec la méthode "AppendUser" pour les ajouter sur la liste.
+  console.log(users);
+  userTable.innerHTML = oldHTML;
+  users.forEach(user => {
+    appendUser(user.name, user.color);
+  });
 });
 
 //Selon les émissions qu'on reçoit depuis le serveur
@@ -48,11 +54,13 @@ socket.on('chat-message', data => {
 
 //Si on reçoit une émission de connexion d'utilisateur
 socket.on('user-connected', data => {
+  console.log('new user connected')
   appendMessage(`${data.name} joined the chatroom.`,'gold'); //On l'écrit.
 });
 
 //Si on reçoit une émission de déconnexion d'utilisateur.
 socket.on('user-disconnected', data => {
+  console.log("new user disconnected");
   appendMessage(`${data.name} left the chatroom.`,'gold');
 });
 

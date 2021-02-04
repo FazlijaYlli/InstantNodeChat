@@ -6,14 +6,19 @@
 */
 
 class User {
+    id;
     name;
     color;
 
-    constructor(name, color) {
+    constructor(id, name, color) {
+        this.id = id;
         this.name = name;
         this.color = color;
     }
 
+    get id() {
+        return this.id;
+    }
     get name() {
         return this.name;
     }
