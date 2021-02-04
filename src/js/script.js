@@ -16,14 +16,18 @@ const oldHTML = userTable.innerHTML;
 
 //On demande le nom à l'utilisateur avec un pop-up.
 const name = prompt('Bienvenue !\nAvant de continuer, nous avons besoin\nde votre pseudonyme :');
+
+//On vérifie si le nom ne contient pas du vide ou que des espaces.
 const reg = name.match(/^$|^\s$/g);
 
 //Création du tableau des couleurs disponibles, et séléction d'une couleur au hasard.
-const colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'lime', 'brown', 'pink', 'purple'];
+const colors = ['Red','Blue','Green','Cyan','BlueViolet','Coral','Fuchsia','Orange','SeaGreen','YellowGreen'];
 const color = colors[Math.floor(Math.random() * (colors.length))];
 
+//On vérifie le résultat de la regex.
 if(reg !== null)
 {
+  //Si le nom est erroné, on envoie une erreur.
   appendMessage('Erreur : Le nom fourni n\'est pas valide. Veuillez recharger la page.','red');
   throw new Error('Erreur : Le nom fourni n\'est pas valide. Veuillez recharger la page.');
 }
@@ -95,4 +99,5 @@ function appendUser(user, color) {
   const cell = row.insertCell(0);
   cell.innerText = user;
   cell.style.color = color;
+  cell.className = "user-name";
 }
