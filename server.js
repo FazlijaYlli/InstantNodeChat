@@ -9,9 +9,12 @@ const User = require("./src/js/User"); //Requiering my User class
 
 const express = require('express'); //Requiering Express
 const app = express(); //Creating an express app
-const server = require('http').Server(app) //Setting up an http server with express
+const server = require('http').createServer(app) //Setting up an http server with express
 const io = require('socket.io')(server); //Using socket.io on this server.
 const port = 3000;
+
+//Assigner le port en dur.
+app.set('port', process.env.PORT || port);
 
 //Creating a listener for the server.
 server.listen(port, ()=>{

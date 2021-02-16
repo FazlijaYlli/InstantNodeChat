@@ -1,10 +1,15 @@
 body {
-    font-family: sans-serif;
-    font-size: 12pt;
+    background-color: #222222;
+    font-family: 'Helvetica', sans-serif;
+    font-size: 14pt;
     padding: 0;
     margin: 0;
     display: flex;
     justify-content: center;
+}
+
+p {
+    margin: 0;
 }
 
 #message-container {
@@ -14,22 +19,68 @@ body {
 
 #message-container div {
     padding: 10px;
+    border-style: double;
+    border-width: medium;
 }
 
 #send-container {
     position: fixed;
     padding-bottom: 30px;
     bottom: 0;
-    background-color: white;
+    margin: auto;
     max-width: 1200px;
     width: 80%;
     display: flex;
 }
 
 #message-input {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 14pt;
     flex-grow: 1;
+    color: white;
+    background-color: #222222;
 }
 
-.user-name {
+#user-table {
+    color: white;
+    padding: 10px;
+    width: 15%;
+    margin: 10px;
+}
+
+#send-button {
+    font-family: 'Helvetica', sans-serif;
+}
+
+.message-element {
+    overflow-wrap: break-word;
+    border: 2px solid #999999;
+    background-color: #383838;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.message-element::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.time-left {
+    margin-top: 5px;
+    float: left;
+    color: #999;
+}
+
+.user-cell {
+    padding: 5px 10px;
+    border-style: double;
+    border-color: #999999;
+    border-width: medium;
+}
+
+.user-row {
     text-align: center;
+    background-color: #383838;
 }
