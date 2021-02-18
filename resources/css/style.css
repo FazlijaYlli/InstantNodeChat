@@ -39,6 +39,13 @@ p {
     flex-grow: 1;
     color: white;
     background-color: #222222;
+    border-color: #424242;
+}
+
+#send-button {
+    color: white;
+    background-color: #222222;
+    border-color: #424242;
 }
 
 #user-table {
